@@ -31,6 +31,7 @@
 // puis faire une boucle = mettre toujours une etoile sauf que cette fois soit elles sont gold soit elle sont grey
 // cf phoot 3 - puis mettre une key cf photo 4
 // ala place re review dans text mettre {obj. }
+// status bar = Composant permettant de contrôler la barre d'état de l'application.
 
 import React from "react";
 import {
@@ -40,7 +41,8 @@ import {
   Text,
   ImageBackground,
   Image,
-  StyleSheet
+  StatusBar,
+  TouchableOpacity
 } from "react-native";
 import Axios from "axios";
 import { ScrollView } from "react-native-gesture-handler";
@@ -72,10 +74,13 @@ class HomeScreen extends React.Component {
       return (
         <View>
           <View>
-            <Button
+            <StatusBar barStyle="light-content" />
+          </View>
+          <View>
+            {/* <Button
               title="Aller sur une autre page"
               onPress={this.showMoreApp}
-            />
+            /> */}
           </View>
           <FlatList
             // le Flatlit est comme un map, sauf qu il a des propriété
@@ -87,8 +92,21 @@ class HomeScreen extends React.Component {
             keyExtractor={item => String(item._id)} // c'est pas formecement _id voir selon l'object que je recupere
             // ce qu il renvoi
             renderItem={obj => {
+              // console.log(obj.item._id)= pour vérifier l'acces aux id
+
               return (
-                <View>
+                <TouchableOpacity
+                  // dans onPress il faut toujours mettre une fonction donc ajouter {} et =>
+                  onPress={() => {
+                    // mettre une alerte pour tester le onPress = alert("pressed !");
+                    this.props.navigation.navigate("Other", {
+                      id: obj.item._id
+                    }); // cf le nom entre "" dans app - en 2 parmetre je passe l'id
+                    // cf la doc: react native navigation pass props: https://reactnavigation.org/docs/en/params.html
+                    // pour trouver le bon chemin vers l'id, id: obj.item._id, en 2 eme parametre il faut faire un console.log dans le terminal
+                    // cf sous renderItem en commentaire. pour le trouver, commencer par console.log(obj)puis console.log(obj.item._id)
+                  }}
+                >
                   <ImageBackground
                     source={{ uri: obj.item.photos[0] }}
                     style={{ height: 150 }}
@@ -124,7 +142,9 @@ class HomeScreen extends React.Component {
                       >
                         {obj.item.title}
                       </Text>
-                      <StarsEx starCount={obj.item.ratingValue} />
+                      <View style={{ marginTop: 8 }}>
+                        <StarsEx starCount={obj.item.ratingValue} />
+                      </View>
                     </View>
                     <Image
                       style={{
@@ -135,7 +155,7 @@ class HomeScreen extends React.Component {
                       source={{ uri: obj.item.user.account.photos[0] }}
                     />
                   </View>
-                </View>
+                </TouchableOpacity>
               );
             }}
           />

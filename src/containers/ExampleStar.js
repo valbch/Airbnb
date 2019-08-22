@@ -16,18 +16,12 @@ class StarsEx extends React.Component {
           rating={this.props.starCount}
           fullStarColor={"gold"}
           starSize={20}
+
           //doc https://js.coach/react-native-star-rating?search=star+rating+react+native
         />
       </View>
     );
   }
 }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     flexDirection: "row"
-//   }
-// });
 
 export default StarsEx;
